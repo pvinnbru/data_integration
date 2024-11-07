@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { DiveSpot } from "@/types";
 import Image from "next/image";
@@ -22,6 +24,7 @@ const DiveSpotCard: React.FC<DiveSpotCardProps> = ({ data }) => {
           height={500}
           alt="Picture of the author"
           className="rounded-t-md object-cover h-full w-full"
+          priority
         />
         <div className="absolute top-0 left-0 right-0 py-2 px-2 flex justify-end gap-2">
           {data.diveTypes.map((type, index) => (

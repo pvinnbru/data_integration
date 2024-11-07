@@ -1,0 +1,32 @@
+[
+  {
+    "title": "SS Dunraven Wreck",
+    "diveTypes": ["Wreck", "Reef", "Wall"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/54/00/5400da7aa84ead48f45088be3a355759.webp"
+  },
+  {
+    "title": "Gilboa Quarry",
+    "diveTypes": ["Lake"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/0e/2b/0e2b251b2827a75f2c04485cd78cc0cd.webp"
+  },
+  {
+    "title": "3 Rocks (Sharm rock)",
+    "diveTypes": ["Reef"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/2c/e8/2ce83ec488aa41aa153c45990ee2e927.webp"
+  },
+  {
+    "title": "Casino Point Dive Park",
+    "diveTypes": ["Beach"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/06/8c/068ca23c8292937bcefe76a2e0989b1a.webp"
+  },
+  {
+    "title": "Car Pile (The Dive Bus House Reef)",
+    "diveTypes": ["Wreck", "Reef", "Wall"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/f7/28/f72828e2de27251b63156bcfafba61d8.webp"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "title": "HMS Maori",
+    "diveTypes": ["Wreck", "Reef"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/2d/8c/2d8cfafb53ccc04b34f02470b193cd69.webp"
+  },
+  {
+    "title": "USAT Liberty Shipwreck",
+    "diveTypes": ["Wreck", "Reef", "Wall"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/6c/75/6c75b5ca3c2c6789390d49cf45e8886f.webp"
+  },
+  {
+    "title": "Manta Point",
+    "diveTypes": ["Reef"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/e3/9e/e39eed5b53e83aa50982d89d613ea141.webp"
+  },
+  {
+    "title": "THE HOLE / GREEN BAY CAVES",
+    "diveTypes": ["Cave", "Reef"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/b7/96/b79669fdcab3a66aa4d5801acf011f3b.webp"
+  },
+  {
+    "title": "Cyclops",
+    "diveTypes": ["Wall", "Channel", "Ocean"],
+    "rating": 1,
+    "image": "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/2d/8c/2d8cfafb53ccc04b34f02470b193cd69.webp"
+  }
+]
