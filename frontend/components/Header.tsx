@@ -1,24 +1,34 @@
+import Link from "next/link";
+
 const Header = () => {
+  const headerLinks = [
+    {
+      name: "Home",
+      href: "/",
+    },
+    {
+      name: "Map",
+      href: "/map",
+    },
+  ];
+
   return (
     <div className="w-full bg-black h-16 py-2 px-4 flex items-center gap-16">
-      <h1 className="text-white text-2xl font-bold">Dive Finder</h1>
+      <Link
+        href="/"
+        className="text-white text-2xl font-bold hover:opacity-75 transition"
+      >
+        Dive Finder
+      </Link>
       <nav>
         <ul className="flex space-x-4 font-semibold">
-          <li>
-            <a href="#" className="text-white">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#" className="text-white">
-              About
-            </a>
-          </li>
-          <li>
-            <a href="#" className="text-white">
-              Contact
-            </a>
-          </li>
+          {headerLinks.map((link) => (
+            <li key={link.name}>
+              <Link href={link.href} className="text-white hover:opacity-75">
+                {link.name}
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </div>

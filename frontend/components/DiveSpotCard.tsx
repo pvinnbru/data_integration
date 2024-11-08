@@ -1,21 +1,19 @@
-"use client";
-
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { DiveSpot } from "@/types";
+import { DiveSite } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Badge } from "./ui/badge";
 
 interface DiveSpotCardProps {
-  data: DiveSpot;
+  data: DiveSite;
 }
 
 const DiveSpotCard: React.FC<DiveSpotCardProps> = ({ data }) => {
   return (
-    <Card className="relative hover:scale-105 transition overflow-hidden hover:border-white hover:border-2 border-opacity-0 hover:border-opacity-100 shadow-xl duration-300 h-56 aspect-[10/7]">
+    <Card className="relative hover:scale-105 transition overflow-hidden hover:border-white hover:border-2 border-opacity-0 hover:border-opacity-100 shadow-xl duration-300 h-56 aspect-[10/7] select-none">
       <Link
-        href="/"
+        href={`/sites/${data.id}`}
         className="transition flex flex-col justify-between h-full"
       >
         <Image
