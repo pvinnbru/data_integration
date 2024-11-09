@@ -1,4 +1,5 @@
 import DynamicMap from "@/components/DynamicMap";
+import { Separator } from "@/components/ui/separator";
 import { DiveSite } from "@/types";
 
 const SiteDetailsPage = async ({
@@ -15,7 +16,9 @@ const SiteDetailsPage = async ({
 
   return (
     <>
-      <div className="w-full">Site Details: {site.title}</div>
+      <h1 className="font-semibold text-2xl mb-8">Explore: {site.title}</h1>
+      <Separator className="w-full  bg-slate-600 rounded-full mb-8" />
+      <h2 className="font-semibold text-xl mb-4">Here you are going to be.</h2>
       <DynamicMap
         longitude={site.location.longitude}
         latitude={site.location.latitude}

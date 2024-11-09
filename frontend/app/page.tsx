@@ -5,7 +5,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="py-10 px-20 flex-1">
+      <div className="py-10 px-14 flex-1 w-full h-full  flex justify-center">
         <div className="max-w-screen-2xl w-full flex flex-col gap-16 min-h-full">
           <CardSection
             title="Recommendations for you"

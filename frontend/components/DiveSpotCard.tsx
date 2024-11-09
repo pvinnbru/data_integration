@@ -11,7 +11,7 @@ interface DiveSpotCardProps {
 
 const DiveSpotCard: React.FC<DiveSpotCardProps> = ({ data }) => {
   return (
-    <Card className="relative hover:scale-105 transition overflow-hidden hover:border-white hover:border-2 border-opacity-0 hover:border-opacity-100 shadow-xl duration-300 h-56 aspect-[10/7] select-none">
+    <Card className="relative hover:scale-105 transition overflow-hidden hover:border-white hover:border-2 border-opacity-0 hover:border-opacity-100 shadow-xl duration-300 aspect-[10/7] select-none">
       <Link
         href={`/sites/${data.id}`}
         className="transition flex flex-col justify-between h-full"

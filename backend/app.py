@@ -26,7 +26,7 @@ def get_recommendations_for_you():
     with open('assets/dive_sites.json', 'r') as file:
         data = json.load(file)
         # select 5 random recommendations
-        data = random.sample(data, 5)
+        data = random.sample(data, 7)
     return jsonify(data), 200
 
 @app.route('/recommendations/popular', methods=['GET'])
@@ -34,7 +34,7 @@ def get_recommendations_popular():
     with open('assets/dive_sites.json', 'r') as file:
         data = json.load(file)
         # select 5 random recommendations
-        data = random.sample(data, 5)
+        data = random.sample(data, 7)
     return jsonify(data), 200
 
 if __name__ == '__main__':
