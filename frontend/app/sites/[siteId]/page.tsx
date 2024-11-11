@@ -18,7 +18,7 @@ const SiteDetailsPage = async ({
     <>
       <h1 className="font-semibold text-2xl mb-8">Explore: {site.title}</h1>
       <Separator className="w-full  bg-slate-600 rounded-full mb-8" />
-      <h2 className="font-semibold text-xl mb-4">Here you are going to be.</h2>
+      <h2 className="font-semibold text-xl mb-4">You are going to be here.</h2>
       <DynamicMap
         longitude={site.location.longitude}
         latitude={site.location.latitude}
@@ -30,7 +30,7 @@ const SiteDetailsPage = async ({
             href: `/sites/${siteId}`,
           },
         ]}
-        zoom={10}
+        zoom={8}
       />
     </>
   );
