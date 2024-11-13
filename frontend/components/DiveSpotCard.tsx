@@ -17,7 +17,7 @@ const DiveSpotCard: React.FC<DiveSpotCardProps> = ({ data }) => {
         className="transition flex flex-col justify-between h-full"
       >
         <Image
-          src={data.image}
+          src={data.image_url}
           width={500}
           height={500}
           alt="Picture of the author"
@@ -25,8 +25,8 @@ const DiveSpotCard: React.FC<DiveSpotCardProps> = ({ data }) => {
           priority
         />
         <div className="absolute top-0 left-0 right-0 py-2 px-2 flex justify-end gap-2">
-          {data.diveTypes.map((type, index) => (
-            <Badge key={index}>{type}</Badge>
+          {data.types.map((type, index) => (
+            <Badge key={index}>{type.type_name}</Badge>
           ))}
         </div>
         <CardHeader
