@@ -25,8 +25,8 @@ const DiveSpotCard: React.FC<DiveSpotCardProps> = ({ data }) => {
           priority
         />
         <div className="absolute top-0 left-0 right-0 py-2 px-2 flex justify-end gap-2">
-          {data.types.map((type, index) => (
-            <Badge key={index}>{type.type_name}</Badge>
+          {data.categories.map((category, index) => (
+            <Badge key={index}>{category.name}</Badge>
           ))}
         </div>
         <CardHeader

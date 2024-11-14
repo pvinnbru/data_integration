@@ -1,14 +1,14 @@
 export type DiveSite = {
     id: number;
     title: string;
-    types: Type[];
+    categories: DiveSiteCategory[];
     rating: number;
     image_url: string;
     latitude: number;
     longitude: number;
 };
 
-export type Type = {
+export type DiveSiteCategory = {
     id: number;
-    type_name: string;
+    name: string;
 }

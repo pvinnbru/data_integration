@@ -22,32 +22,32 @@ class DiveSite(BaseModel):
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text, nullable=True)
-    image_url = db.Column(db.String(255), nullable=True)
-    url = db.Column(db.String(255), nullable=True)
-    rating = db.Column(db.Float, nullable=True)
+    image_url = db.Column(db.String(255), nullable=False)
+    url = db.Column(db.String(255), nullable=False)
     max_depth = db.Column(db.Float, nullable=True)
+    region = db.Column(db.String(100), nullable=True)
     occurrences = db.relationship('Occurrence', back_populates='dive_site')
     dive_site_ratings = db.relationship('DiveSiteRating', back_populates='dive_site')
-    types = db.relationship('Type', secondary='types_per_dive_site', back_populates='dive_sites')
+    categories = db.relationship('DiveSiteCategory', secondary='categories_per_dive_site', back_populates='dive_sites')
 
-# Types model
-class Type(BaseModel):
+# DiveSiteCategories model
+class DiveSiteCategory(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
-    type_name = db.Column(db.String(80), unique=True, nullable=False)
-    dive_sites = db.relationship('DiveSite', secondary='types_per_dive_site', back_populates='types')
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    dive_sites = db.relationship('DiveSite', secondary='categories_per_dive_site', back_populates='categories')
 
-# Association table for Dive Sites and Types
-types_per_dive_site = db.Table(
-    'types_per_dive_site',
+# Association table for Dive Sites and Categories
+categories_per_dive_site = db.Table(
+    'categories_per_dive_site',
     db.Column('dive_site_id', db.Integer, db.ForeignKey('dive_site.id'), primary_key=True),
-    db.Column('type_id', db.Integer, db.ForeignKey('type.id'), primary_key=True)
+    db.Column('dive_site_category_id', db.Integer, db.ForeignKey('dive_site_category.id'), primary_key=True)
 )
 
 # Animals model
 class Animal(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     scientific_name = db.Column(db.String(100), unique=True, nullable=False)
-    common_name = db.Column(db.String(100), nullable=True)
+    common_name = db.Column(db.String(100), nullable=False)
     occurrences = db.relationship('Occurrence', back_populates='animal')
     animal_ratings = db.relationship('AnimalRating', back_populates='animal')
 
