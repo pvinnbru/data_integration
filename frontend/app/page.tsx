@@ -17,12 +17,12 @@ const Home = async () => {
           {user && (
             <CardSection
               title="Recommendations for you"
-              apiUrl={`${apiUrl}/recommendations/for_you`}
+              apiUrl={`${apiUrl}/dive-sites/`}
             />
           )}
           <CardSection
             title="Popular Diving Spots"
-            apiUrl={`${apiUrl}/recommendations/popular`}
+            apiUrl={`${apiUrl}/dive-sites/`}
           />
         </div>
       </div>

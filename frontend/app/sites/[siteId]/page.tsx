@@ -10,8 +10,8 @@ const SiteDetailsPage = async ({
   const { siteId } = await params;
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000";
 
-  const site: DiveSite = await fetch(`${apiUrl}/sites/${siteId}`).then((res) =>
-    res.json()
+  const site: DiveSite = await fetch(`${apiUrl}/dive-sites/${siteId}`).then(
+    (res) => res.json()
   );
 
   return (
@@ -20,12 +20,12 @@ const SiteDetailsPage = async ({
       <Separator className="w-full  bg-slate-600 rounded-full mb-8" />
       <h2 className="font-semibold text-xl mb-4">You are going to be here.</h2>
       <DynamicMap
-        longitude={site.location.longitude}
-        latitude={site.location.latitude}
+        longitude={site.longitude}
+        latitude={site.latitude}
         markers={[
           {
-            latitude: site.location.latitude,
-            longitude: site.location.longitude,
+            latitude: site.latitude,
+            longitude: site.longitude,
             title: site.title,
             href: `/sites/${siteId}`,
           },
