@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +31,7 @@ interface MapProps {
 const Map = ({ latitude, longitude, markers, zoom, className }: MapProps) => {
   useEffect(() => {
     // Ensure window is defined and available for Leaflet
+
     if (typeof window !== "undefined") {
       L.map;
     }
@@ -47,6 +48,7 @@ const Map = ({ latitude, longitude, markers, zoom, className }: MapProps) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
+      {/* <MarkerClusterGroup> */}
       {markers.map((marker, index) => (
         <Marker key={index} position={[marker.latitude, marker.longitude]}>
           <Popup>
@@ -56,6 +58,7 @@ const Map = ({ latitude, longitude, markers, zoom, className }: MapProps) => {
           </Popup>
         </Marker>
       ))}
+      {/* </MarkerClusterGroup> */}
     </MapContainer>
   );
 };

@@ -1,4 +1,5 @@
 import CardSection from "@/components/CardSection";
+import TallCardSection from "@/components/TallCardSection";
 import { createClient } from "@/supabase/server";
 
 const Home = async () => {
@@ -13,16 +14,20 @@ const Home = async () => {
   return (
     <>
       <div className="py-10 px-14 flex-1 w-full h-full  flex justify-center">
-        <div className="w-full flex flex-col gap-16 min-h-full">
+        <div className="w-full flex flex-col gap-8 min-h-full">
           {user && (
             <CardSection
               title="Recommendations for you"
-              apiUrl={`${apiUrl}/dive-sites/`}
+              apiUrl={`${apiUrl}/dive-sites/random`}
             />
           )}
           <CardSection
             title="Popular Diving Spots"
-            apiUrl={`${apiUrl}/dive-sites/`}
+            apiUrl={`${apiUrl}/dive-sites/random`}
+          />
+          <TallCardSection
+            title="Categories"
+            apiUrl={`${apiUrl}/dive-site-categories/`}
           />
         </div>
       </div>
