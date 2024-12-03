@@ -31,7 +31,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex flex-col dark`}
       >
         <Header />
-        <main className="bg-slate-800 flex-1 flex flex-col items-center">
+        {/* <main className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 flex-1 flex flex-col items-center"> */}
+        <main className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 animate-gradient-x flex-1 flex flex-col items-center">
           {children}
         </main>
         <Toaster />

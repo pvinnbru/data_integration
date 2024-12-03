@@ -24,7 +24,7 @@ class DiveSite(BaseModel):
     description = db.Column(db.Text, nullable=True)
     image_url = db.Column(db.String(255), nullable=False)
     url = db.Column(db.String(255), nullable=False)
-    max_depth = db.Column(db.Float, nullable=True)
+    max_depth = db.Column(db.String, nullable=True)
     region = db.Column(db.String(100), nullable=True)
     occurrences = db.relationship('Occurrence', back_populates='dive_site')
     dive_site_ratings = db.relationship('DiveSiteRating', back_populates='dive_site')
@@ -46,8 +46,8 @@ categories_per_dive_site = db.Table(
 # Animals model
 class Animal(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
-    scientific_name = db.Column(db.String(100), unique=True, nullable=False)
-    common_name = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    image_url = db.Column(db.String(255), nullable=False)
     occurrences = db.relationship('Occurrence', back_populates='animal')
     animal_ratings = db.relationship('AnimalRating', back_populates='animal')
 
@@ -56,7 +56,6 @@ class Occurrence(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     dive_site_id = db.Column(db.Integer, db.ForeignKey('dive_site.id'), nullable=False)
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
-    occurrence_count = db.Column(db.Integer, nullable=False, default=1)
     dive_site = db.relationship('DiveSite', back_populates='occurrences')
     animal = db.relationship('Animal', back_populates='occurrences')
 
