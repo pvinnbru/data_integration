@@ -24,9 +24,12 @@ const SiteDetailsPage = async ({
 
   return (
     <>
-      <div className="flex justify-between mb-8 gap-8">
-        <h1 className="font-semibold text-2xl ">Explore: {site.title}</h1>
-        <div className="flex gap-2 flex-wrap">
+      <div className="flex justify-between mb-4 gap-8 items-center">
+        <div>
+          <h2 className=" text-md">{site.region}</h2>
+          <h1 className="font-semibold text-2xl ">{site.title}</h1>
+        </div>
+        <div className="flex gap-2 flex-wrap h-6">
           {site.categories.map((category, index) => (
             <Badge key={index}>{category.name}</Badge>
           ))}

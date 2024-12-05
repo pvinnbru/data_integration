@@ -26,7 +26,8 @@ def get_random_dive_sites():
         'categories': [category.to_dict() for category in site.categories],
         'latitude' : site.lat,
         'longitude' : site.long,
-        'image_url' : site.image_url
+        'image_url' : site.image_url,
+        'region' : site.region,
     } for site in dive_sites])
 
 
@@ -41,7 +42,8 @@ def get_dive_site(id):
         'longitude' : site.long,
         'categories': [category.to_dict() for category in site.categories],
         'animals': [occurrence.animal.to_dict() for occurrence in site.occurrences],
-        'image_url' : site.image_url
+        'image_url' : site.image_url,
+        'region' : site.region,
     })
 
 @dive_sites_bp.route('/', methods=['POST'])

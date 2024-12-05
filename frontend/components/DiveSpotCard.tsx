@@ -36,6 +36,7 @@ const DiveSpotCard: React.FC<DiveSpotCardProps> = ({ data }) => {
               "linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.75) 100%)",
           }}
         >
+          {data.region}
           <CardTitle>{data.title}</CardTitle>
           {/* <CardDescription>Description</CardDescription> */}
         </CardHeader>
