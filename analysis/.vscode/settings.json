@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "divefinder",
+            "connectString": "postgresql://postgres.svsobttfvdpdxpiwjeqg:z36ow70ANRJB5GHa@aws-0-eu-central-1.pooler.supabase.com:6543/postgres"
+        }
+    ]
+}
