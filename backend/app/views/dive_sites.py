@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request
-from ..models import DiveSite, DiveSiteCategory
+from ..models import DiveSite, DiveSiteCategory, Animal, Occurrence
 from ..extensions import db
-from sqlalchemy import func
+from sqlalchemy import func, or_
+from sqlalchemy.orm import aliased
 
 dive_sites_bp = Blueprint('dive_sites_bp', __name__)
 
@@ -18,7 +19,7 @@ def get_all_dive_sites():
 # get 10 random dive sites
 @dive_sites_bp.route('/random', methods=['GET'])
 def get_random_dive_sites():
-    dive_sites = DiveSite.query.order_by(func.random()).limit(10).all()
+    dive_sites = DiveSite.query.order_by(func.random()).limit(15).all()
     return jsonify([{
         'id': site.id,
         'title': site.title,
@@ -30,6 +31,33 @@ def get_random_dive_sites():
         'region' : site.region,
     } for site in dive_sites])
 
+@dive_sites_bp.route('/search', methods=['GET'])
+def search_dive_sites():
+    query = request.args.get('q','')
+    search_term = f"%{query}%"  # The query for fuzzy matching
+
+    # Alias for the animal occurrences to ensure proper join
+    animal_occurrences = aliased(Occurrence)
+    dive_sites = DiveSite.query.join(animal_occurrences, animal_occurrences.dive_site_id == DiveSite.id).join(
+        Animal, Animal.id == animal_occurrences.animal_id
+    ).filter(
+        or_(
+            DiveSite.title.ilike(search_term),
+            DiveSite.region.ilike(search_term),
+            DiveSite.categories.any(DiveSiteCategory.name.ilike(search_term)),
+            Animal.name.ilike(search_term)  # Now we can search animals correctly
+        )
+    ).limit(50).all()
+    return jsonify([{
+        'id': site.id,
+        'title': site.title,
+        'description': site.description,
+        'categories': [category.to_dict() for category in site.categories],
+        'latitude' : site.lat,
+        'longitude' : site.long,
+        'image_url' : site.image_url,
+        'region' : site.region,
+    } for site in dive_sites])
 
 @dive_sites_bp.route('/<int:id>', methods=['GET'])
 def get_dive_site(id):
