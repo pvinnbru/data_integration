@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosStarOutline } from "react-icons/io";
 import { IoIosStar } from "react-icons/io";
 
@@ -16,6 +16,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({ siteId, userId }) => {
 
   const [rating, setRating] = useState(0);
   const [activated, setActivated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { toast } = useToast();
 
@@ -24,7 +25,36 @@ const RatingStars: React.FC<RatingStarsProps> = ({ siteId, userId }) => {
     setActivated(true);
   };
 
+  useEffect(() => {
+    const getInitialRating = async () => {
+      try {
+        const response = await fetch(
+          `${apiUrl}/dive-sites/${siteId}/ratings/${userId}`
+        );
+
+        if (!response.ok) {
+          console.warn(`Failed to fetch rating: ${response.statusText}`);
+          return; // Exit early if the response is not ok
+        }
+
+        const { rating } = await response.json(); // Destructure response data
+
+        if (rating != null) {
+          setRating(rating); // Only set if rating exists
+        }
+      } catch (error) {
+        console.error("Error fetching rating:", error);
+      }
+    };
+
+    // Only call the function if siteId and userId are defined
+    if (siteId && userId) {
+      getInitialRating();
+    }
+  }, [apiUrl, siteId, userId]); // Include apiUrl for consistency
+
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${apiUrl}/dive-sites/${siteId}/ratings`, {
         method: "POST",
@@ -55,6 +85,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({ siteId, userId }) => {
       });
       console.error("Error submitting rating", error);
     }
+    setLoading(false);
   };
 
   return (
@@ -72,7 +103,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({ siteId, userId }) => {
       </div>
       <Button
         onClick={() => handleSubmit()}
-        disabled={!activated}
+        disabled={!activated || loading}
         className="transition font-semibold mt-4"
       >
         Submit

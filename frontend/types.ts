@@ -22,3 +22,11 @@ export type DiveSiteAnimal = {
     name: string;
     image_url?: string;
 }
+
+export type DiveSiteRating = {
+    "1":number;
+    "2":number;
+    "3":number;
+    "4":number;
+    "5":number;
+}

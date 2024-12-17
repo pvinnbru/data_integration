@@ -5,8 +5,28 @@ ratings_bp = Blueprint('ratings', __name__)
 
 @ratings_bp.route('/<int:site_id>/ratings', methods=['GET'])
 def get_all_ratings(site_id):
+    # Get all ratings in the database in a dictionary with the keys from 1 to 5
+
+    # Only get the ratings filds from the database
     ratings = DiveSiteRating.query.filter_by(dive_site_id=site_id).all()
-    return jsonify([rating.to_dict() for rating in ratings])
+    rating_dict = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+
+    for rating in ratings:
+        rating_dict[rating.rating] += 1
+
+    return jsonify(rating_dict), 200
+
+@ratings_bp.route('/<int:site_id>/ratings/<user_id>', methods=['GET'])
+def get_rating_by_user(site_id,user_id):
+
+    rating = DiveSiteRating.query.filter_by(dive_site_id=site_id, user_id=user_id).first()
+
+    # If no rating exists, return a null value for the rating
+    rating_value = rating.rating if rating else None
+
+    # Return the response
+    return jsonify({"rating": rating_value}), 200
+
 
 @ratings_bp.route('/<int:site_id>/ratings', methods=['POST'])
 def add_rating(site_id):

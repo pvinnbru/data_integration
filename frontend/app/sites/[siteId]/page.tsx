@@ -1,7 +1,7 @@
 import DynamicMap from "@/components/DynamicMap";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { DiveSite } from "@/types";
+import { DiveSite, DiveSiteRating } from "@/types";
 import Image from "next/image";
 import Ratings from "./components/Ratings";
 import RatingStars from "./components/RatingStars";
@@ -26,7 +26,9 @@ const SiteDetailsPage = async ({
   } = await supabase.auth.getUser();
 
   // TODO: Implement rating system
-  const ratings = [5, 4, 3, 3, 3, 5, 4, 1, 5, 5, 5, 5, 5, 5, 5];
+  const ratings: DiveSiteRating = await fetch(
+    `${apiUrl}/dive-sites/${siteId}/ratings`
+  ).then((res) => res.json());
 
   return (
     <>
@@ -73,19 +75,15 @@ const SiteDetailsPage = async ({
         </>
       )}
 
-      {ratings.length > 0 && (
-        <>
-          <h2 className="font-semibold text-xl mb-4">
-            Rate this dive spot now!
-          </h2>
-          <div className="flex justify-center items-center mb-8">
-            <RatingStars siteId={siteId} userId={user?.id} />
-          </div>
-          <h2 className="font-semibold text-xl mb-4">Ratings:</h2>
-          <Ratings ratings={ratings} />
-          <Separator className="w-full  bg-slate-600 rounded-full my-8" />
-        </>
-      )}
+      <>
+        <h2 className="font-semibold text-xl mb-4">Rate this dive spot now!</h2>
+        <div className="flex justify-center items-center mb-8">
+          <RatingStars siteId={siteId} userId={user?.id} />
+        </div>
+        <h2 className="font-semibold text-xl mb-4">Ratings:</h2>
+        <Ratings ratings={ratings} />
+        <Separator className="w-full  bg-slate-600 rounded-full my-8" />
+      </>
 
       <h2 className="font-semibold text-xl mb-4">You are going to be here.</h2>
       <DynamicMap
