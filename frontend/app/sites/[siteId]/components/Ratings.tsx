@@ -1,11 +1,14 @@
 import { Separator } from "@/components/ui/separator";
 import React from "react";
+import { IoIosStar } from "react-icons/io";
 
 interface RatingsProps {
   ratings: number[];
 }
 
 const Ratings: React.FC<RatingsProps> = ({ ratings }) => {
+  const ratingAverage = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+
   return (
     <div className="flex w-full justify-between items-center gap-4">
       <div className="flex-1">
@@ -32,7 +35,13 @@ const Ratings: React.FC<RatingsProps> = ({ ratings }) => {
         orientation="vertical"
         className="h-full bg-slate-600 rounded-full my-8"
       />
-      <div className="flex-1">Top comments</div>
+      <div className="flex justify-center flex-col items-center py-4 flex-1">
+        <div className="text-3xl flex items-center justify-center gap-2">
+          <span>{`${ratingAverage} / 5.0`}</span>
+          <IoIosStar className="text-yellow-400" size={35} />
+        </div>
+        <span className="">{`Based on ${ratings.length} ratings`}</span>
+      </div>
     </div>
   );
 };

@@ -14,6 +14,7 @@ export type DiveSite = {
 export type DiveSiteCategory = {
     id: number;
     name: string;
+    image_url: string;
 }
 
 export type DiveSiteAnimal = {
