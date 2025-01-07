@@ -1,6 +1,9 @@
 import { createClient } from "@/supabase/server";
 import Link from "next/link";
 import UserProfile from "./UserProfile";
+import { TiHome } from "react-icons/ti";
+import { FaMapMarkedAlt } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
 const Header = async () => {
   const supabase = await createClient();
@@ -13,10 +16,20 @@ const Header = async () => {
     {
       name: "Home",
       href: "/",
+      icon: TiHome,
+      iconSize: 20,
+    },
+    {
+      name: "Search",
+      href: "/search",
+      icon: FaSearch,
+      iconSize: 18,
     },
     {
       name: "Map",
       href: "/map",
+      icon: FaMapMarkedAlt,
+      iconSize: 20,
     },
   ];
 
@@ -30,11 +43,15 @@ const Header = async () => {
           Dive Finder
         </Link>
         <nav>
-          <ul className="flex space-x-4 font-semibold">
+          <ul className="flex space-x-10 font-semibold">
             {headerLinks.map((link) => (
               <li key={link.name}>
-                <Link href={link.href} className="text-white hover:opacity-75">
-                  {link.name}
+                <Link
+                  href={link.href}
+                  className="text-white hover:opacity-75 flex items-center gap-2"
+                >
+                  <link.icon size={link.iconSize} />
+                  <p>{link.name}</p>
                 </Link>
               </li>
             ))}
