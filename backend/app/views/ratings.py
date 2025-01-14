@@ -42,7 +42,19 @@ def add_rating(site_id):
         return jsonify(existing_rating.to_dict()), 200  # Return 200 OK for update
     else:
         # Create a new rating if no existing rating is found
-        new_rating = DiveSiteRating(dive_site_id=site_id, **data)
+        new_rating = DiveSiteRating(dive_site_id=site_id, user_id=user_id,
+            rating=data.get("rating"))
+        print(new_rating)
         db.session.add(new_rating)
         db.session.commit()
         return jsonify(new_rating.to_dict()), 201  # Return 201 Created for new entry
+    
+'''
+Little bug from autoincrements. How to fix it:
+
+SELECT MAX(id) FROM dive_site_rating;
+SELECT last_value FROM dive_site_rating_id_seq;
+SELECT setval('dive_site_rating_id_seq', 19 + 1);
+
+
+'''

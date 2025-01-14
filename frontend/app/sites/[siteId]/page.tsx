@@ -76,10 +76,16 @@ const SiteDetailsPage = async ({
       )}
 
       <>
-        <h2 className="font-semibold text-xl mb-4">Rate this dive spot now!</h2>
-        <div className="flex justify-center items-center mb-8">
-          <RatingStars siteId={siteId} userId={user?.id} />
-        </div>
+        {user && (
+          <>
+            <h2 className="font-semibold text-xl mb-4">
+              Rate this dive spot now!
+            </h2>
+            <div className="flex justify-center items-center mb-8">
+              <RatingStars siteId={siteId} userId={user?.id} />
+            </div>
+          </>
+        )}
         <h2 className="font-semibold text-xl mb-4">Ratings:</h2>
         <Ratings ratings={ratings} />
         <Separator className="w-full  bg-slate-600 rounded-full my-8" />
