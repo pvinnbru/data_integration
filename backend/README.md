@@ -23,7 +23,8 @@ In this section we provide detailled insight on the structure and usage of our b
    ```bash
    source .venv/bin/activate
    # or when on windows:
-   .venv\Scripts\Activate.ps1
+   .venv\Scripts\activate
+
    ```
 
 4. Install the necessary dependencies
