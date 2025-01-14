@@ -16,9 +16,7 @@ const TallDiveSiteCard: React.FC<TallDiveSiteCardProps> = ({ data }) => {
         className="transition flex flex-col justify-between h-full"
       >
         <Image
-          src={
-            "https://d2p1cf6997m1ir.cloudfront.net/media/thumbnails/5d/fd/5dfd20e4c826b825693453c55864372f.webp"
-          }
+          src={data.image_url}
           width={500}
           height={500}
           alt="Picture of the author"
