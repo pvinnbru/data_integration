@@ -1,4 +1,4 @@
-export default function SitesDetailLayout({
+export default function AnimalsLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
