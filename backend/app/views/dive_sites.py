@@ -8,7 +8,7 @@ dive_sites_bp = Blueprint('dive_sites_bp', __name__)
 
 @dive_sites_bp.route('/', methods=['GET'])
 def get_all_dive_sites():
-    dive_sites = DiveSite.query.order_by(func.random()).limit(500).all()
+    dive_sites = DiveSite.query.order_by(func.random()).all()
     return jsonify([{
         'id': site.id,
         'title': site.title,
