@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex flex-col dark`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh flex flex-col dark`}
       >
         <Header />
         {/* <main className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 flex-1 flex flex-col items-center"> */}
