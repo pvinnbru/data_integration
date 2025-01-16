@@ -7,6 +7,7 @@ import Ratings from "./components/Ratings";
 import RatingStars from "./components/RatingStars";
 import { createClient } from "@/supabase/server";
 import SitePageSidebar from "./components/SitePageSidebar";
+import AnimalHoverCard from "@/app/animals/components/AnimalHoverCard";
 
 const SiteDetailsPage = async ({
   params,
@@ -70,7 +71,13 @@ const SiteDetailsPage = async ({
             <p className="mb-4">The following animals can be found here:</p>
             <div className="flex gap-4 flex-wrap">
               {site.animals.map((animal, index) => (
-                <Badge key={index}>{animal.name}</Badge>
+                <AnimalHoverCard
+                  name={animal.name}
+                  imageUrl={animal.image_url}
+                  key={index}
+                >
+                  <Badge key={index}>{animal.name}</Badge>
+                </AnimalHoverCard>
               ))}
             </div>
             <Separator className="w-full  bg-slate-600 rounded-full my-8" />

@@ -2,7 +2,7 @@ export type DiveSite = {
     id: number;
     title: string;
     categories: DiveSiteCategory[];
-    animals: DiveSiteAnimal[];
+    animals: Animal[];
     rating: number;
     image_url: string;
     latitude: number;
@@ -15,12 +15,6 @@ export type DiveSiteCategory = {
     id: number;
     name: string;
     image_url: string;
-}
-
-export type DiveSiteAnimal = {
-    id:number;
-    name: string;
-    image_url?: string;
 }
 
 export type DiveSiteRating = {
