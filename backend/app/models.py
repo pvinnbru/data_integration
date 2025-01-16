@@ -1,4 +1,5 @@
 from .extensions import db
+from sqlalchemy.dialects.postgresql import UUID
 
 # create base model class
 class BaseModel(db.Model):
@@ -9,7 +10,7 @@ class BaseModel(db.Model):
 
 # User model
 class User(BaseModel):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(UUID(as_uuid=True), primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     dive_site_ratings = db.relationship('DiveSiteRating', back_populates='user')
@@ -34,6 +35,7 @@ class DiveSite(BaseModel):
 class DiveSiteCategory(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+    image_url = db.Column(db.String(255), nullable=False)
     dive_sites = db.relationship('DiveSite', secondary='categories_per_dive_site', back_populates='categories')
 
 # Association table for Dive Sites and Categories
@@ -47,7 +49,7 @@ categories_per_dive_site = db.Table(
 class Animal(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    image_url = db.Column(db.String(255), nullable=False)
+    image_url = db.Column(db.String(255), nullable=True)
     occurrences = db.relationship('Occurrence', back_populates='animal')
     animal_ratings = db.relationship('AnimalRating', back_populates='animal')
 
@@ -62,7 +64,7 @@ class Occurrence(BaseModel):
 # Dive Site Ratings model
 class DiveSiteRating(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('user.id'), nullable=False)
     dive_site_id = db.Column(db.Integer, db.ForeignKey('dive_site.id'), nullable=False)
     rating = db.Column(db.Float, nullable=False)
     user = db.relationship('User', back_populates='dive_site_ratings')
@@ -71,7 +73,7 @@ class DiveSiteRating(BaseModel):
 # Animal Ratings model
 class AnimalRating(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('user.id'), nullable=False)
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
     rating = db.Column(db.Float, nullable=False)
     user = db.relationship('User', back_populates='animal_ratings')
