@@ -1,8 +1,9 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app #current_app includes the app context, e.g. ContentBasedFiltering
 from ..models import DiveSite, DiveSiteCategory, Animal, Occurrence
 from ..extensions import db
 from sqlalchemy import func, or_
 from sqlalchemy.orm import aliased
+
 
 dive_sites_bp = Blueprint('dive_sites_bp', __name__)
 
@@ -106,3 +107,73 @@ def add_category_to_dive_site(id):
     return jsonify({'message': 'Category added to dive site'}), 201
 
 # Recommendations
+
+# CONTENT BASED RECOMMENDATION
+
+# 
+def format_recommendation(recommendations):
+    """ Transform recommendations of content based recommender system from a dataframe into the desired format """
+    formatted_recommendations = []
+    for _, row in recommendations.iterrows():
+        formatted_recommendations.append({
+            'id': row['id'],
+            'title': row['title'],
+            'description': row.get('description', None),  # Use .get to avoid KeyError
+            'categories': [
+                {
+                    'id': category.id,
+                    'name': category.name,
+                    'image_url': category.image_url
+                }
+                for category in DiveSite.query.get(row['id']).categories
+            ],
+            'latitude': row['lat'],
+            'longitude': row['long'],
+            'image_url': row.get('image_url', None),
+            'region': row.get('region', None),
+        })
+
+    return jsonify(formatted_recommendations)
+
+
+# Route to apply
+# Flask Route to get recommendations for a dive site. Example request: GET /dive-sites/recommendations/2?w_cat=0.4&w_geo=0.3&w_animal=0.3&n=10
+@dive_sites_bp.route('/recommendations/<int:dive_site_id>', methods=['GET'])
+def recommend_for_dive_site(dive_site_id):
+    w_cat = float(request.args.get('w_cat', 1/3))
+    w_geo = float(request.args.get('w_geo', 1/3))
+    w_animal = float(request.args.get('w_animal', 1/3))
+    n = int(request.args.get('n', 10))
+
+    if not (0 <= w_cat <= 1 and 0 <= w_geo <= 1 and 0 <= w_animal <= 1):
+        return jsonify({'error': 'Weights must be between 0 and 1'}), 400
+
+    if abs((w_cat + w_geo + w_animal) - 1) > 1e-6:
+        return jsonify({'error': 'The sum of weights must be 1'}), 400
+
+    recommendations = current_app.cbf.get_recommendations_for_a_dive_site(
+        dive_site_id, w_cat=w_cat, w_geo=w_geo, w_animal=w_animal, n=10
+    )
+    
+    return format_recommendation(recommendations)
+
+    
+
+# Flask Route to get recommendations for a user
+@dive_sites_bp.route('/recommendations/users/<int:user_id>', methods=['GET'])
+def recommend_for_user(user_id):
+    w_cat = float(request.args.get('w_cat', 1/3))
+    w_geo = float(request.args.get('w_geo', 1/3))
+    w_animal = float(request.args.get('w_animal', 1/3))
+    n = int(request.args.get('n', 10))
+
+    if not (0 <= w_cat <= 1 and 0 <= w_geo <= 1 and 0 <= w_animal <= 1):
+        return jsonify({'error': 'Weights must be between 0 and 1'}), 400
+
+    if abs((w_cat + w_geo + w_animal) - 1) > 1e-6:
+        return jsonify({'error': 'The sum of weights must be 1'}), 400
+
+    recommendations = current_app.cbf.get_recommendations_for_a_user(
+        user_id, w_cat=w_cat, w_geo=w_geo, w_animal=w_animal, n=n
+    )
+    return format_recommendation(recommendations)
