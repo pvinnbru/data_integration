@@ -13,7 +13,7 @@ def create_app():
     # Initialize extensions
     db.init_app(app)
     CORS(app)
-
+    
     # Initialize Flask-Migrate
     migrate = Migrate(app, db)  # Add this line
 

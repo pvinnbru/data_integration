@@ -9,7 +9,6 @@ def get_all_animals():
     animals = Animal.query.all()
     return jsonify([{
         'id': animal.id,
-        'scientific_name': animal.scientific_name,
         'common_name': animal.common_name
     } for animal in animals])
 
@@ -18,7 +17,6 @@ def get_animal(id):
     animal = Animal.query.get_or_404(id)
     return jsonify({
         'id': animal.id,
-        'scientific_name': animal.scientific_name,
         'common_name': animal.common_name
     })
 
@@ -26,7 +24,6 @@ def get_animal(id):
 def create_animal():
     data = request.get_json()
     new_animal = Animal(
-        scientific_name=data['scientific_name'],
         common_name=data.get('common_name')
     )
     db.session.add(new_animal)
