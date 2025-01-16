@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import Image from "next/image";
 
 const AnimalHoverCard = ({
@@ -16,9 +16,9 @@ const AnimalHoverCard = ({
   children: React.ReactNode;
 }) => {
   return (
-    <HoverCard>
-      <HoverCardTrigger asChild>{children}</HoverCardTrigger>
-      <HoverCardContent className="flex justify-center items-center flex-col gap-4">
+    <Popover>
+      <PopoverTrigger asChild>{children}</PopoverTrigger>
+      <PopoverContent className="flex justify-center items-center flex-col gap-4">
         <h1>{name}</h1>
         <Image
           src={imageUrl}
@@ -28,8 +28,8 @@ const AnimalHoverCard = ({
           className="rounded-md"
         />
         <Button>Find {name}!</Button>
-      </HoverCardContent>
-    </HoverCard>
+      </PopoverContent>
+    </Popover>
   );
 };
 
