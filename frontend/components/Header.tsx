@@ -4,8 +4,8 @@ import UserProfile from "./UserProfile";
 import { TiHome } from "react-icons/ti";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { IoFish } from "react-icons/io5";
+import { SidebarTrigger } from "./ui/sidebar";
 
 const Header = async () => {
   const supabase = await createClient();
@@ -80,7 +80,8 @@ const Header = async () => {
           </>
         )}
       </div>
-      <RxHamburgerMenu size={35} className="block md:hidden" />
+      {/* <RxHamburgerMenu size={35} className="block md:hidden" /> */}
+      <SidebarTrigger className="block md:hidden" />
     </div>
   );
 };
