@@ -9,6 +9,7 @@ import { FaSearch } from "react-icons/fa";
 const SearchPage = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000";
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchDone, setSearchDone] = useState(false);
   const [filteredSites, setFilteredSites] = useState<DiveSite[]>([]);
 
   const fetchSearchResults = async () => {
@@ -19,11 +20,14 @@ const SearchPage = () => {
     );
     const results = await response.json();
     setFilteredSites(results);
+    setSearchDone(true);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       fetchSearchResults(); // Trigger search on Enter key press
+    } else {
+      setSearchDone(false);
     }
   };
 
@@ -46,6 +50,11 @@ const SearchPage = () => {
         </button>
       </div>
       <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {filteredSites.length === 0 && searchDone && (
+          <p className="col-span-full text-center text-lg">
+            {`No results found for ${searchQuery}`}
+          </p>
+        )}
         {filteredSites.map((item) => (
           <DiveSpotCard key={item.id} data={item} />
         ))}
