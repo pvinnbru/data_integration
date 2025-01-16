@@ -55,101 +55,76 @@ class ContentBasedFiltering:
         return pd.read_sql(query, con=self.db_engine)
 
     def _load_user(self):
-        query = "SELECT * FROM user"
+        query = 'SELECT * FROM "user"'
         return pd.read_sql(query, con=self.db_engine)
 
     def _load_user_ratings_data(self):
         query = "SELECT * FROM dive_site_rating"
         return pd.read_sql(query, con=self.db_engine)
 
-
     def _init_converted_dive_sites(self):
         '''
-        This function initializes the converted dive sites DataFrame. This dataframe includes the feature vectors for each dive site.
+        Initializes the converted dive sites DataFrame with feature vectors for each dive site.
         '''
         # Load data from the database
         occurrences = self._load_occurrences()
         categories_per_dive_site = self._load_categories_per_dive_site()
 
-        # let's generate a copy for the current dive sites dataframe
-        converted_dive_sites = copy.deepcopy(self.dive_sites)    
+        # Precompute category and animal mappings
+        category_map = categories_per_dive_site.groupby('dive_site_id')['dive_site_category_id'].apply(list).to_dict()
+        animal_map = occurrences.groupby('dive_site_id')['animal_id'].apply(list).to_dict()
 
-        # for each category, we generate a new column (indicator if category is present in the list of genres)
-        for cat_id in self.categories['id']:
-            # create a new column for the current category
-            category_name = self.categories.loc[self.categories['id'] == cat_id, 'name'].values[0]
-            converted_dive_sites[category_name] = 0
+        # Create the base DataFrame
+        converted_dive_sites = self.dive_sites.copy()
 
-            # iterate over all rows
-            for index, row in converted_dive_sites.iterrows():
-                # get a list of all dive_site_category_ids for the current dive_site_id
-                list_of_cat_ids = list(categories_per_dive_site[categories_per_dive_site['dive_site_id'] == row['id']]['dive_site_category_id'])
-                # check if the current cat_id in the list of categories for the current dive_site_id
-                if cat_id in list_of_cat_ids:
-                    converted_dive_sites.at[index, category_name] = 1
+        # Prepare category columns
+        category_columns = {
+            cat_name: converted_dive_sites['id'].map(
+                lambda x: 1 if cat_id in category_map.get(x, []) else 0
+            )
+            for cat_id, cat_name in zip(self.categories['id'], self.categories['name'])
+        }
 
-        # Scale lat and long to be between 0 and 1 with a MinMaxScaler
-        scaler = MinMaxScaler()
-        converted_dive_sites[['lat_scaled', 'long_scaled']] = scaler.fit_transform(converted_dive_sites[['lat', 'long']])
+        # Prepare animal columns
+        animal_columns = {
+            animal_name: converted_dive_sites['id'].map(
+                lambda x: 1 if animal_id in animal_map.get(x, []) else 0
+            )
+            for animal_id, animal_name in zip(self.animals['id'], self.animals['name'])
+        }
 
-
-        # Initialize animal feature columns in a single operation
-        animal_columns = {animal_name: 0 for animal_name in self.animals['name']}
+        # Add category and animal columns in one operation
         converted_dive_sites = pd.concat(
-            [converted_dive_sites, pd.DataFrame(animal_columns, index=converted_dive_sites.index)],
+            [converted_dive_sites, pd.DataFrame(category_columns), pd.DataFrame(animal_columns)],
             axis=1
         )
 
+        # Scale latitude and longitude
+        scaler = MinMaxScaler()
+        converted_dive_sites[['lat_scaled', 'long_scaled']] = scaler.fit_transform(
+            converted_dive_sites[['lat', 'long']]
+        )
 
-        # Populate the animal feature columns
-        for index, row in converted_dive_sites.iterrows():
-            dive_site_id = row['id']
-            animal_ids = occurrences[occurrences['dive_site_id'] == dive_site_id]['animal_id'].values   # get all animal_ids for the current dive_site_id
-            for animal_id in animal_ids:
-                animal_name = self.animals[self.animals['id'] == animal_id]['name'].values[0]
-                converted_dive_sites.at[index, animal_name] = 1
+        # Add `occurences` column (vectorized)
+        converted_dive_sites['occurences'] = converted_dive_sites['id'].map(
+            lambda x: ', '.join(
+                self.animals[self.animals['id'].isin(animal_map.get(x, []))]['name'].tolist()
+            )
+        )
 
-        # START
-        #  The following is just for the examples in the end, delete if not needed:
+        # Add `categories` column (vectorized)
+        converted_dive_sites['categories'] = converted_dive_sites['id'].map(
+            lambda x: ', '.join(
+                self.categories[self.categories['id'].isin(category_map.get(x, []))]['name'].tolist()
+            )
+        )
 
-        # add a new column 'occurences' to the converted_dive_sites dataframe
-        converted_dive_sites['occurences'] = ''
-        for index, row in converted_dive_sites.iterrows():
-            dive_site_id = row['id']
-            # get all animal names for the current dive_site_id
-            animal_ids = occurrences[occurrences['dive_site_id'] == dive_site_id]['animal_id'].values
-            animal_names = []
-            for animal_id in animal_ids:
-                animal_name = self.animals[self.animals['id'] == animal_id]['name'].values[0]
-                animal_names.append(animal_name)
-
-            animal_names = ', '.join(animal_names)
-            converted_dive_sites.at[index, 'occurences'] = animal_names
-
-        # add a new column 'categories' to the converted_dive_sites dataframe
-        converted_dive_sites['categories'] = ''
-        for index, row in converted_dive_sites.iterrows():
-            dive_site_id = row['id']
-            # get all category names for the current dive_site_id
-            category_ids = categories_per_dive_site[categories_per_dive_site['dive_site_id'] == dive_site_id]['dive_site_category_id'].values
-            category_names = []
-            for category_id in category_ids:
-                category_name = self.categories[self.categories['id'] == category_id]['name'].values[0]
-                category_names.append(category_name)
-
-            category_names = ', '.join(category_names)
-            converted_dive_sites.at[index, 'categories'] = category_names
-
-
-        # END
-
-
-        # sort converted_dive_sites by id 
-        # drop the label index
+        # Sort by ID and reset index
         converted_dive_sites = converted_dive_sites.sort_values(by='id').reset_index(drop=True)
 
-
         return converted_dive_sites
+
+
 
 
     ### Main recommendation functions ###
@@ -192,6 +167,8 @@ class ContentBasedFiltering:
         recommendations_df[f'Geodata Similarity to dive site {dive_site_id}'] = [d['geodata'] for d in recommendations] 
         recommendations_df[f'Animal Similarity to dive site {dive_site_id}'] = [d['animal'] for d in recommendations]
 
+        pd.set_option('display.max_columns', None)
+        pd.set_option('display.expand_frame_repr', False)
         print(f"Recommendations for dive site with ID {dive_site_id}:", flush=True)
         print(recommendations_df, flush=True)
 
@@ -241,11 +218,13 @@ class ContentBasedFiltering:
 
         # return the list of titles and similarities
         recommendations_df = self.converted_dive_sites.loc[dive_sites_indexes, ['id', 'title', 'lat', 'long', 'occurences', 'categories']]
-        recommendations_df[f'Similarity to user {user_id}'] = [d['combined'] for d in recommendations]
-        recommendations_df[f'Category Similarity to user {user_id}'] = [d['category'] for d in recommendations]
-        recommendations_df[f'Geodata Similarity to user {user_id}'] = [d['geodata'] for d in recommendations] 
-        recommendations_df[f'Animal Similarity to user {user_id}'] = [d['animal'] for d in recommendations]
+        recommendations_df[f'Total Similarity'] = [d['combined'] for d in recommendations]
+        recommendations_df[f'Category Similarity'] = [d['category'] for d in recommendations]
+        recommendations_df[f'Geodata Similarity'] = [d['geodata'] for d in recommendations] 
+        recommendations_df[f'Animal Similarity'] = [d['animal'] for d in recommendations]
 
+        pd.set_option('display.max_columns', None)
+        pd.set_option('display.expand_frame_repr', False)
         print(f"Recommendations for the user with the ID {user_id}:", flush=True)
         print(recommendations_df, flush=True)
 

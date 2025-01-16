@@ -161,7 +161,7 @@ def recommend_for_dive_site(dive_site_id):
     
 
 # Flask Route to get recommendations for a user
-@dive_sites_bp.route('/recommendations/users/<int:user_id>', methods=['GET'])
+@dive_sites_bp.route('/recommendations/users/<string:user_id>', methods=['GET'])
 def recommend_for_user(user_id):
     user_id = uuid.UUID(user_id)
     w_cat = float(request.args.get('w_cat', 1/3))

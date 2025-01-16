@@ -26,7 +26,4 @@ def create_app():
     # Register blueprints
     register_blueprints(app)
 
-    # Print all registered routes
-    print(app.url_map)
-
     return app
