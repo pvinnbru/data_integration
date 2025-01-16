@@ -32,9 +32,6 @@ class ContentBasedFiltering:
         self.user['user_lat'] = np.random.uniform(-90, 90, len(self.user))
         self.user['user_long'] = np.random.uniform(-180, 180, len(self.user))
 
-        # Debugging: Print loaded data
-        print("Dive Sites DataFrame:", flush=True)
-        print(self.dive_sites.head(), flush=True)
         print(f"Loaded {len(self.converted_dive_sites)} rows into converted_dive_sites", flush=True)
 
     def _load_occurrences(self):
@@ -195,6 +192,9 @@ class ContentBasedFiltering:
         recommendations_df[f'Geodata Similarity to dive site {dive_site_id}'] = [d['geodata'] for d in recommendations] 
         recommendations_df[f'Animal Similarity to dive site {dive_site_id}'] = [d['animal'] for d in recommendations]
 
+        print(f"Recommendations for dive site with ID {dive_site_id}:", flush=True)
+        print(recommendations_df, flush=True)
+
         return recommendations_df
 
     ## Recommend dive sites for a given user
@@ -245,6 +245,9 @@ class ContentBasedFiltering:
         recommendations_df[f'Category Similarity to user {user_id}'] = [d['category'] for d in recommendations]
         recommendations_df[f'Geodata Similarity to user {user_id}'] = [d['geodata'] for d in recommendations] 
         recommendations_df[f'Animal Similarity to user {user_id}'] = [d['animal'] for d in recommendations]
+
+        print(f"Recommendations for the user with the ID {user_id}:", flush=True)
+        print(recommendations_df, flush=True)
 
         return recommendations_df
 
