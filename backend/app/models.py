@@ -27,6 +27,7 @@ class DiveSite(BaseModel):
     url = db.Column(db.String(255), nullable=False)
     max_depth = db.Column(db.String, nullable=True)
     region = db.Column(db.String(100), nullable=True)
+    cluster = db.Column(db.Integer, nullable=True)
     occurrences = db.relationship('Occurrence', back_populates='dive_site')
     dive_site_ratings = db.relationship('DiveSiteRating', back_populates='dive_site')
     categories = db.relationship('DiveSiteCategory', secondary='categories_per_dive_site', back_populates='dive_sites')
@@ -78,3 +79,17 @@ class AnimalRating(BaseModel):
     rating = db.Column(db.Float, nullable=False)
     user = db.relationship('User', back_populates='animal_ratings')
     animal = db.relationship('Animal', back_populates='animal_ratings')
+    
+from sqlalchemy.dialects.postgresql import ARRAY
+
+class UserVector(db.Model):
+    __tablename__ = 'user_vectors'
+    user_id = db.Column(db.String, unique=True, nullable=False, primary_key=True)
+    vector = db.Column(ARRAY(db.Float), nullable=False)  # Use ARRAY(Float) for PostgreSQL
+    bias = db.Column(db.Float, nullable=False)
+
+class ItemVector(db.Model):
+    __tablename__ = 'item_vectors'
+    item_id = db.Column(db.String, unique=True, nullable=False, primary_key=True)
+    vector = db.Column(ARRAY(db.Float), nullable=False)  # Use ARRAY(Float) for PostgreSQL
+    bias = db.Column(db.Float, nullable=False)
