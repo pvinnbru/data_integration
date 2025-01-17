@@ -74,6 +74,66 @@ def recommend_dive_regions(user_id):
     except Exception as e: 
         # If any error occurs, return the error message
         return jsonify({"error": str(e)}), 500
+    
+@recommendations_bp.route('/recommend_animals/<user_id>', methods=['GET'])
+def recommend_dive_animals(user_id):
+    # Initialize Supabase client
+    SUPABASE_URL = Config.SUPABASE_URL
+    SUPABASE_ANON_KEY = Config.SUPABASE_ANON_KEY
+    supabaseClient = supabase.create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    try:
+        # Convert user_id to UUID
+        user_id_uuid = uuid.UUID(user_id)
+
+        # Call the Supabase function (passing the UUID user ID)
+        response = supabaseClient.rpc("get_favorite_animals_w_dive_sites", params={"puser_id": str(user_id_uuid)}).execute()
+
+        # Return the recommendations as JSON
+        return jsonify(response.data), 200 
+
+    except Exception as e: 
+        # If any error occurs, return the error message
+        return jsonify({"error": str(e)}), 500
+    
+@recommendations_bp.route('/rating_count/<user_id>', methods=['GET'])
+def rating_count(user_id):
+    # Initialize Supabase client
+    SUPABASE_URL = Config.SUPABASE_URL
+    SUPABASE_ANON_KEY = Config.SUPABASE_ANON_KEY
+    supabaseClient = supabase.create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    try:
+        # Convert user_id to UUID
+        user_id_uuid = uuid.UUID(user_id)
+
+        # Call the Supabase function (passing the UUID user ID)
+        response = supabaseClient.rpc("get_number_of_ratings", params={"puser_id": str(user_id_uuid)}).execute()
+
+        # Return the recommendations as JSON
+        return jsonify(response.data), 200 
+
+    except Exception as e: 
+        # If any error occurs, return the error message
+        return jsonify({"error": str(e)}), 500
+    
+@recommendations_bp.route('/recommend_top10', methods=['GET'])
+def recommend_top10():
+    # Initialize Supabase client
+    SUPABASE_URL = Config.SUPABASE_URL
+    SUPABASE_ANON_KEY = Config.SUPABASE_ANON_KEY
+    supabaseClient = supabase.create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    try:
+        # Call the Supabase function (passing the UUID user ID)
+        response = supabaseClient.rpc("get_top_10_best_rated_dive_sites").execute()
+
+        # Return the recommendations as JSON
+        return jsonify(response.data), 200 
+
+    except Exception as e: 
+        # If any error occurs, return the error message
+        return jsonify({"error": str(e)}), 500
 
 def save_model_to_db(svd_model, trainset):
     """
