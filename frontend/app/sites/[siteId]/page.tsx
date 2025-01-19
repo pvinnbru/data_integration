@@ -118,7 +118,7 @@ const SiteDetailsPage = async ({
           className="h-[600px] max-h-[80vw] rounded-md"
         />
       </div>
-      <SitePageSidebar />
+      <SitePageSidebar siteId={siteId} />
     </div>
   );
 };

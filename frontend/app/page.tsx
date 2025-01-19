@@ -18,7 +18,7 @@ const Home = async () => {
           {user && (
             <CardSection
               title="Recommendations for you"
-              apiUrl={`${apiUrl}/dive-sites/random`}
+              apiUrl={`${apiUrl}/dive-sites/recommendations/users/${user.id}`}
             />
           )}
           <CardSection

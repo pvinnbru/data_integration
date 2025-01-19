@@ -1,13 +1,18 @@
 import DiveSpotCard from "@/components/DiveSpotCard";
 import { Separator } from "@/components/ui/separator";
 import { DiveSite } from "@/types";
+import React from "react";
 
-const SitePageSidebar = async () => {
+interface SitePageSidebarProps {
+  siteId: string;
+}
+
+const SitePageSidebar: React.FC<SitePageSidebarProps> = async ({ siteId }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000";
 
-  const data: DiveSite[] = await fetch(`${apiUrl}/dive-sites/random`).then(
-    (res) => res.json()
-  );
+  const data: DiveSite[] = await fetch(
+    `${apiUrl}/dive-sites/recommendations/${siteId}`
+  ).then((res) => res.json());
 
   return (
     <div className="w-full xl:w-1/4 h-full xl:pr-8 mt-16 xl:mt-0 px-4">

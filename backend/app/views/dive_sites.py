@@ -130,8 +130,8 @@ def format_recommendation(recommendations):
             ],
             'latitude': row['lat'],
             'longitude': row['long'],
-            'image_url': row.get('image_url', None),
-            'region': row.get('region', None),
+            'image_url': row.get('image_url', None), # TODO: Add image_url 
+            'region': row.get('region', None), # TODO: Add region
         })
 
     return jsonify(formatted_recommendations)
