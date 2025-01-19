@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import { Toaster } from "@/components/ui/toaster";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/AppSidebar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,12 +32,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh flex flex-col dark`}
       >
-        <Header />
-        {/* <main className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 flex-1 flex flex-col items-center"> */}
-        <main className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 animate-gradient-x flex-1 flex flex-col items-center">
-          {children}
-        </main>
-        <Toaster />
+        <SidebarProvider
+          className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh flex flex-row dark`}
+          defaultOpen={false}
+        >
+          <AppSidebar />
+          <div className="flex flex-col w-full h-full">
+            <Header />
+            <main className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 animate-gradient-x flex-1 flex flex-col items-center">
+              {children}
+            </main>
+          </div>
+          <Toaster />
+        </SidebarProvider>
       </body>
     </html>
   );

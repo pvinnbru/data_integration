@@ -4,6 +4,8 @@ import UserProfile from "./UserProfile";
 import { TiHome } from "react-icons/ti";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
+import { IoFish } from "react-icons/io5";
+import { SidebarTrigger } from "./ui/sidebar";
 
 const Header = async () => {
   const supabase = await createClient();
@@ -31,6 +33,12 @@ const Header = async () => {
       icon: FaMapMarkedAlt,
       iconSize: 20,
     },
+    {
+      name: "Animals",
+      href: "/animals",
+      icon: IoFish,
+      iconSize: 20,
+    },
   ];
 
   return (
@@ -42,7 +50,7 @@ const Header = async () => {
         >
           Dive Finder
         </Link>
-        <nav>
+        <nav className="hidden md:flex">
           <ul className="flex space-x-10 font-semibold">
             {headerLinks.map((link) => (
               <li key={link.name}>
@@ -58,7 +66,7 @@ const Header = async () => {
           </ul>
         </nav>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="items-center gap-4 hidden md:flex">
         {user ? (
           <UserProfile />
         ) : (
@@ -72,6 +80,8 @@ const Header = async () => {
           </>
         )}
       </div>
+      {/* <RxHamburgerMenu size={35} className="block md:hidden" /> */}
+      <SidebarTrigger className="block md:hidden" />
     </div>
   );
 };

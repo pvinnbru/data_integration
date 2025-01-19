@@ -54,7 +54,7 @@ const Map = ({ latitude, longitude, markers, zoom, className }: MapProps) => {
     <MapContainer
       center={[latitude, longitude]}
       zoom={zoom || 13}
-      className={cn("h-96 w-full", className)}
+      className={cn("h-96 w-full z-[5]", className)}
     >
       {/* Link for different tilings: https://leaflet-extras.github.io/leaflet-providers/preview/index.html */}
       <TileLayer

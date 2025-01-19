@@ -2,6 +2,9 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 import json
 import random
+from sqlalchemy import func
+from app.models import DiveSite
+from app.models import DiveSiteRating
 
 app = Flask(__name__)
 
