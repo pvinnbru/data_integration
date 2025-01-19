@@ -32,7 +32,7 @@ class ContentBasedFiltering:
         self.user['user_lat'] = np.random.uniform(-90, 90, len(self.user))
         self.user['user_long'] = np.random.uniform(-180, 180, len(self.user))
 
-        print(f"Loaded {len(self.converted_dive_sites)} rows into converted_dive_sites", flush=True)
+        #print(f"Loaded {len(self.converted_dive_sites)} rows into converted_dive_sites", flush=True)
 
     def _load_occurrences(self):
         query = "SELECT * FROM occurrence"  # Replace with the actual table name
@@ -138,7 +138,7 @@ class ContentBasedFiltering:
         w_cat: weight for the category vector
         w_geo: weight for the geodata (lat_scaled, long_scaled) vector 
         """
-        print(f"Generating recommendations for dive site with ID {dive_site_id}...", flush=True)
+        #print(f"Generating recommendations for dive site with ID {dive_site_id}...", flush=True)
 
         idx = dive_site_id-1 # index of the query dive site in the DataFrame
 
@@ -153,7 +153,7 @@ class ContentBasedFiltering:
 
         # Other Dive Sites
         
-        print(f"Queried dive site index: {idx}")
+        #print(f"Queried dive site index: {idx}")
 
         # generate recommendations
         recommendations = self.recommend(query_categories_vector, query_geodata_vector, query_animal_vector, w_cat, w_geo, w_animal, n, ignore_idx=idx)
@@ -169,8 +169,8 @@ class ContentBasedFiltering:
 
         pd.set_option('display.max_columns', None)
         pd.set_option('display.expand_frame_repr', False)
-        print(f"Recommendations for dive site with ID {dive_site_id}:", flush=True)
-        print(recommendations_df, flush=True)
+        #print(f"Recommendations for dive site with ID {dive_site_id}:", flush=True)
+        #print(recommendations_df, flush=True)
 
         return recommendations_df
 
@@ -190,7 +190,7 @@ class ContentBasedFiltering:
         n: number of recommendations to return
 
         """
-        print(f"Generating recommendations for the user with the ID {user_id}...")
+        #print(f"Generating recommendations for the user with the ID {user_id}...")
 
         # get the ratings and item profiles of the user
         ratings, item_profiles = self.get_item_profile_of_user(user_id)
@@ -225,8 +225,8 @@ class ContentBasedFiltering:
 
         pd.set_option('display.max_columns', None)
         pd.set_option('display.expand_frame_repr', False)
-        print(f"Recommendations for the user with the ID {user_id}:", flush=True)
-        print(recommendations_df, flush=True)
+        #print(f"Recommendations for the user with the ID {user_id}:", flush=True)
+        #print(recommendations_df, flush=True)
 
         return recommendations_df
 
@@ -253,14 +253,14 @@ class ContentBasedFiltering:
         similarities = []
 
         # iterate over all dive sites
-        print("Iterate over all dive sites...")
+        #print("Iterate over all dive sites...")
         for i in range(len(self.converted_dive_sites)):
 
             # Skip the query dive site
             if i == ignore_idx:
                 continue
 
-            print(f" {i} / {len(self.converted_dive_sites)}", end="\r")
+            #print(f" {i} / {len(self.converted_dive_sites)}", end="\r")
 
             similiarity_dict = {}
             similiarity_dict['index'] = i  
@@ -333,8 +333,8 @@ class ContentBasedFiltering:
         """
         user_ratings = self.user_ratings_data[self.user_ratings_data['user_id'] == user_id]
 
-        print(f"User with ID {user_id} has rated {len(user_ratings)} dive sites.")
-        print(user_ratings)
+        #print(f"User with ID {user_id} has rated {len(user_ratings)} dive sites.")
+        #print(user_ratings)
 
         item_profiles = []
         ratings = []

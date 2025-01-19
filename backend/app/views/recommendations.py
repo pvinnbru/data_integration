@@ -8,6 +8,7 @@ import numpy as np
 from config import Config
 import supabase
 import uuid
+from supabase import create_client
 
 recommendations_bp = Blueprint('recommendations_bp', __name__)
 
@@ -30,7 +31,7 @@ def fit_model():
     svd_model.fit(trainset)
     
     # Save model and vectors
-    save_model_to_db(svd_model, trainset)
+    save_model_to_db(svd_model, trainset) 
     return jsonify({'message': 'Model trained and saved successfully.'})
 
 @recommendations_bp.route('/recommend_dive_spots/<user_id>', methods=['GET'])
@@ -73,6 +74,33 @@ def recommend_dive_regions(user_id):
 
     except Exception as e: 
         # If any error occurs, return the error message
+        return jsonify({"error": str(e)}), 500
+
+@recommendations_bp.route('/recommend_dive_regions/<user_id>/<region>', methods=['GET'])
+def recommend_dive_sites(user_id, region):
+    # Initialize Supabase client
+    SUPABASE_URL = Config.SUPABASE_URL
+    SUPABASE_ANON_KEY = Config.SUPABASE_ANON_KEY
+    supabaseClient = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    try:
+        # Convert user_id to UUID
+        user_id_uuid = uuid.UUID(user_id)
+
+        # Call the Supabase function (passing the UUID user ID and region)
+        response = supabaseClient.rpc(
+            "get_dive_sites_for_region",
+            params={"puser_id": str(user_id_uuid), "pregion": region}
+        ).execute()
+
+        # Check if the response contains data
+        if response.data:
+            return jsonify(response.data), 200
+        else:
+            return jsonify({"message": "No dive sites found for the specified region"}), 404
+
+    except Exception as e:
+        # Handle any errors
         return jsonify({"error": str(e)}), 500
     
 @recommendations_bp.route('/recommend_animals/<user_id>', methods=['GET'])
@@ -167,4 +195,4 @@ def save_model_to_db(svd_model, trainset):
     db.session.bulk_save_objects(item_data)
     db.session.commit()
 
-    print("Model successfully saved to the database.")
+    # print("Model successfully saved to the database.")
