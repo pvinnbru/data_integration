@@ -23,8 +23,14 @@ const Home = async () => {
           )}
           <CardSection
             title="Popular Diving Spots"
-            apiUrl={`${apiUrl}/dive-sites/random`}
+            apiUrl={`${apiUrl}/recommendations/recommend_top10`}
           />
+          {user && (
+            <CardSection
+              title="Users like you also liked"
+              apiUrl={`${apiUrl}/recommendations/recommend_dive_spots/${user.id}`}
+            />
+          )}
           <TallCardSection
             title="Categories"
             apiUrl={`${apiUrl}/dive-site-categories/`}
