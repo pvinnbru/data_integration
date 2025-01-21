@@ -1,17 +1,18 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { DiveSite } from "@/types";
+import { DiveSiteCategory } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Badge } from "./ui/badge";
 
-interface TallDiveSiteCardProps {
-  data: DiveSite;
+interface CategoryDiveSiteCardProps {
+  data: DiveSiteCategory;
 }
 
-const TallDiveSiteCard: React.FC<TallDiveSiteCardProps> = ({ data }) => {
+const CategoryDiveSiteCard: React.FC<CategoryDiveSiteCardProps> = ({
+  data,
+}) => {
   return (
-    <Card className="relative hover:scale-105 transition overflow-hidden hover:border-white hover:border-2 border-opacity-0 hover:border-opacity-100 shadow-xl duration-300 aspect-[2/3] select-none">
+    <Card className="relative hover:scale-105 transition overflow-hidden hover:border-white hover:border-2 border-opacity-0 hover:border-opacity-100 shadow-xl duration-300 aspect-square select-none rounded-3xl">
       <Link
         href={`/sites/${data.id}`}
         className="transition flex flex-col justify-between h-full"
@@ -24,20 +25,14 @@ const TallDiveSiteCard: React.FC<TallDiveSiteCardProps> = ({ data }) => {
           className="rounded-t-md object-cover h-full w-full"
           priority
         />
-        <div className="absolute top-0 left-0 right-0 py-2 px-2 flex justify-end gap-2 flex-wrap">
-          {data.categories.map((category, index) => (
-            <Badge key={index}>{category.name}</Badge>
-          ))}
-        </div>
         <CardHeader
-          className="bg-zinc-800 absolute bottom-0 left-0 right-0 "
+          className="bg-zinc-800 absolute bottom-0 left-0 right-0 h-1/3 flex justify-center items-center"
           style={{
             background:
               "linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.75) 100%)",
           }}
         >
-          {data.region}
-          <CardTitle>{data.title}</CardTitle>
+          <CardTitle className="text-3xl">{data.name}</CardTitle>
           {/* <CardDescription>Description</CardDescription> */}
         </CardHeader>
         {/* <CardContent></CardContent> */}
@@ -49,4 +44,4 @@ const TallDiveSiteCard: React.FC<TallDiveSiteCardProps> = ({ data }) => {
   );
 };
 
-export default TallDiveSiteCard;
+export default CategoryDiveSiteCard;

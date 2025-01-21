@@ -1,4 +1,5 @@
 import CardSection from "@/components/CardSection";
+import CategoryCardSection from "@/components/CategoryCardSection";
 import TallCardSection from "@/components/TallCardSection";
 import { createClient } from "@/supabase/server";
 
@@ -21,10 +22,6 @@ const Home = async () => {
               apiUrl={`${apiUrl}/dive-sites/recommendations/users/${user.id}`}
             />
           )}
-          <CardSection
-            title="Popular Diving Spots"
-            apiUrl={`${apiUrl}/recommendations/recommend_top10`}
-          />
           {user && (
             <CardSection
               title="Users like you also liked"
@@ -32,6 +29,10 @@ const Home = async () => {
             />
           )}
           <TallCardSection
+            title="Popular Dive Spots"
+            apiUrl={`${apiUrl}/recommendations/recommend_top10`}
+          />
+          <CategoryCardSection
             title="Categories"
             apiUrl={`${apiUrl}/dive-site-categories/`}
           />
