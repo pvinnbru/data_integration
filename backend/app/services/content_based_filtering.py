@@ -144,12 +144,17 @@ class ContentBasedFiltering:
 
 
         # Query Dive Site: Get Feature Vectors
+        # If a feature vector contains only zeros, we can not calculate the similarity, therefore we set the weight to 0.
         # Category vector
-        query_categories_vector = self.converted_dive_sites.loc[idx, self.categories['name']].to_numpy() 
+        query_categories_vector = self.converted_dive_sites.loc[idx, self.categories['name']].to_numpy()
+        if query_categories_vector.sum() == 0:
+            w_cat = 0
         # Geodata vector
         query_geodata_vector = self.converted_dive_sites.loc[idx, ['lat_scaled', 'long_scaled']].to_numpy()
         # Animal vector
         query_animal_vector = self.converted_dive_sites.loc[idx, self.animals['name']].to_numpy()
+        if query_animal_vector.sum() == 0:
+            w_animal = 0
 
         # Other Dive Sites
         
@@ -206,10 +211,14 @@ class ContentBasedFiltering:
         # split up the user profile into the different feature vectors: category, geodata, animal
         # Category vector
         user_categories_vector = user_profile[self.categories['name']].to_numpy().flatten()
+        if user_categories_vector.sum() == 0:
+            w_cat = 0
         # Geodata vector
         user_geodata_vector = user_profile[['user_lat_scaled', 'user_long_scaled']].to_numpy().flatten()
         # Animal vector
         user_animal_vector = user_profile[self.animals['name']].to_numpy().flatten()
+        if user_animal_vector.sum() == 0:
+            w_animal = 0
 
         # generate recommendations
         recommendations = self.recommend(user_categories_vector, user_geodata_vector, user_animal_vector, w_cat, w_geo, w_animal, n)
