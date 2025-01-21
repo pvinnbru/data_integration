@@ -164,6 +164,10 @@ class ContentBasedFiltering:
         
         dive_sites_indexes = [d['index'] for d in recommendations]
 
+        # get the list of ids from the dive_sites_indexes
+        dive_sites_ids = self.converted_dive_sites.loc[dive_sites_indexes, 'id'].tolist()
+
+        """
         # return the list of titles and similarities
         recommendations_df = self.converted_dive_sites.loc[dive_sites_indexes, ['id', 'title', 'lat', 'long', 'occurences', 'categories']]
         recommendations_df[f'Similarity to dive site {dive_site_id}'] = [d['combined'] for d in recommendations]
@@ -173,10 +177,13 @@ class ContentBasedFiltering:
 
         pd.set_option('display.max_columns', None)
         pd.set_option('display.expand_frame_repr', False)
-        #print(f"Recommendations for dive site with ID {dive_site_id}:", flush=True)
-        #print(recommendations_df, flush=True)
+        print(f"Recommendations for dive site with ID {dive_site_id}:", flush=True)
+        print(recommendations_df, flush=True)
+        """
 
-        return recommendations_df
+        return dive_sites_ids
+
+
 
     ## Recommend dive sites for a given user
     
@@ -224,7 +231,11 @@ class ContentBasedFiltering:
         
         dive_sites_indexes = [d['index'] for d in recommendations]
 
-        # return the list of titles and similarities
+        # get the list of ids from the dive_sites_indexes
+        dive_sites_ids = self.converted_dive_sites.loc[dive_sites_indexes, 'id'].tolist()
+
+        """
+        # list of titles and similarities
         recommendations_df = self.converted_dive_sites.loc[dive_sites_indexes, ['id', 'title', 'lat', 'long', 'occurences', 'categories']]
         recommendations_df[f'Total Similarity'] = [d['combined'] for d in recommendations]
         recommendations_df[f'Category Similarity'] = [d['category'] for d in recommendations]
@@ -233,10 +244,11 @@ class ContentBasedFiltering:
 
         pd.set_option('display.max_columns', None)
         pd.set_option('display.expand_frame_repr', False)
-        #print(f"Recommendations for the user with the ID {user_id}:", flush=True)
-        #print(recommendations_df, flush=True)
+        print(f"Recommendations for the user with the ID {user_id}:", flush=True)
+        print(recommendations_df, flush=True)"""
+       
 
-        return recommendations_df
+        return dive_sites_ids
 
 
     ### Content Based Recommendation Algorithm ###
