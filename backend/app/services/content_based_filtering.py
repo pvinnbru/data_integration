@@ -15,8 +15,7 @@ class ContentBasedFiltering:
         self.dive_sites = self._load_dive_sites()
         self.categories = self._load_categories()
         self.animals = self._load_animals()
-        self.user = self._load_user()    
-        self.user_ratings_data = self._load_user_ratings_data()
+        self.user = self._load_user()
 
         # Initialize converted dive sites
         self.converted_dive_sites = self._init_converted_dive_sites()
@@ -340,10 +339,11 @@ class ContentBasedFiltering:
         """
         This function returns a list of item profiles and a list of ratings for the given user_id.
         """
-        user_ratings = self.user_ratings_data[self.user_ratings_data['user_id'] == user_id]
+        # make a supabase query to get the user ratings
+        user_ratings = DiveSiteRating.query.filter_by(user_id=user_id).all()
 
-        #print(f"User with ID {user_id} has rated {len(user_ratings)} dive sites.")
-        #print(user_ratings)
+        # convert the user ratings to a pandas DataFrame
+        user_ratings = pd.DataFrame([rating.to_dict() for rating in user_ratings])
 
         item_profiles = []
         ratings = []
