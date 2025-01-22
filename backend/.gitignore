@@ -1,0 +1,11 @@
+# Virtual environments
+.venv
+.env
+
+# Python bytecode
+*.pyc
+*.pyo
+*.pyd
+
+# Python cache
+__pycache__/
