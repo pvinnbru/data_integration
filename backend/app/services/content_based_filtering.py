@@ -15,7 +15,6 @@ class ContentBasedFiltering:
         self.dive_sites = self._load_dive_sites()
         self.categories = self._load_categories()
         self.animals = self._load_animals()
-        self.user = self._load_user()
 
         # Initialize converted dive sites
         self.converted_dive_sites = self._init_converted_dive_sites()
@@ -25,11 +24,6 @@ class ContentBasedFiltering:
             self.categories['name'].tolist() 
             + self.animals['name'].tolist()
         )
-
-        #TODO: DELETE LATER
-        # Add random location data for user
-        self.user['user_lat'] = np.random.uniform(-90, 90, len(self.user))
-        self.user['user_long'] = np.random.uniform(-180, 180, len(self.user))
 
         #print(f"Loaded {len(self.converted_dive_sites)} rows into converted_dive_sites", flush=True)
 
@@ -51,14 +45,6 @@ class ContentBasedFiltering:
 
     def _load_animals(self):
         query = "SELECT * FROM animal"
-        return pd.read_sql(query, con=self.db_engine)
-
-    def _load_user(self):
-        query = 'SELECT * FROM "user"'
-        return pd.read_sql(query, con=self.db_engine)
-
-    def _load_user_ratings_data(self):
-        query = "SELECT * FROM dive_site_rating"
         return pd.read_sql(query, con=self.db_engine)
 
     def _init_converted_dive_sites(self):
@@ -436,9 +422,10 @@ class ContentBasedFiltering:
         """
         This function adds the user's geodata to the user profile.
         """
+        user = User.query.get_or_404(user_id)
 
-        user_lat = self.user.loc[self.user['id'] == user_id, 'user_lat'].values
-        user_long = self.user.loc[self.user['id'] == user_id, 'user_long'].values
+        user_lat = user.latitude
+        user_long = user.longitude
 
         # Scale the user's geodata between 0 and 1
         lat_min = -90

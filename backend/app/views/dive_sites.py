@@ -126,12 +126,15 @@ def recommend_for_dive_site(dive_site_id):
         return jsonify({'error': 'The sum of weights must be 1'}), 400
 
     recommendations = current_app.cbf.get_recommendations_for_a_dive_site(
-        dive_site_id, w_cat=w_cat, w_geo=w_geo, w_animal=w_animal, n=10
+        dive_site_id, w_cat=w_cat, w_geo=w_geo, w_animal=w_animal, n=n
     )
 
     # Get the dive sites from the database
     dive_sites = DiveSite.query.filter(DiveSite.id.in_(recommendations)).all()
     
+    # Sort the dive sites by the order of the recommendations
+    dive_sites.sort(key=lambda site: recommendations.index(site.id))
+
     return jsonify([{
         'id': site.id,
         'title': site.title,
@@ -166,6 +169,9 @@ def recommend_for_user(user_id):
 
      # Get the dive sites from the database
     dive_sites = DiveSite.query.filter(DiveSite.id.in_(recommendations)).all()
+
+    # Sort the dive sites by the order of the recommendations
+    dive_sites.sort(key=lambda site: recommendations.index(site.id))
 
     return jsonify([{
         'id': site.id,

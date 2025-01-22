@@ -13,6 +13,8 @@ class User(BaseModel):
     id = db.Column(UUID(as_uuid=True), primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    latitude = db.Column(db.Float, nullable=True)
+    longitude = db.Column(db.Float, nullable=True)
     dive_site_ratings = db.relationship('DiveSiteRating', back_populates='user')
     animal_ratings = db.relationship('AnimalRating', back_populates='user')
 
